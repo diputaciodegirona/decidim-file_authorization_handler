@@ -4,17 +4,10 @@ module Decidim
   module FileAuthorizationHandler
     class AdminEngine < ::Rails::Engine
       isolate_namespace Decidim::FileAuthorizationHandler::Admin
+      paths["db/migrate"] = nil
 
       routes do
         resource :censuses, only: [:show, :create, :destroy]
-      end
-
-      initializer "decidim_file_authorization.add_admin_authorizations" do |_app|
-        Decidim.configure do |config|
-          config.admin_abilities += [
-            "Decidim::FileAuthorizationHandler::Abilities::AdminAbility"
-          ]
-        end
       end
 
       initializer "decidim_file_authorization.add_admin_menu" do
@@ -23,8 +16,7 @@ module Decidim
                     decidim_file_authorization_handler_admin.censuses_path,
                     icon_name: "spreadsheet",
                     position: 7,
-                    active: :inclusive,
-                    if: can?(:read, Decidim::FileAuthorizationHandler::CensusDatum)
+                    active: :inclusive
         end
       end
     end
