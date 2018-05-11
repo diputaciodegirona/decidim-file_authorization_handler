@@ -8,7 +8,7 @@ This information is used by a Decidim authorization handler to authorize real us
 ## Usage
 
 This module provides a model `Decidim::FileAuthorizationHandler::CensusDatum` to store
-census information (identity document and birth date).
+census information (identity document and birth date) in a hashed way (real data is never stored).
 
 It has an admin controller to upload CSV files with the information. When importing
 files all records are inserted and the duplicates are removed in a background job for
