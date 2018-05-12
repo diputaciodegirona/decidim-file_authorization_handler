@@ -19,6 +19,10 @@ module Decidim
                     active: :inclusive
         end
       end
+
+      initializer "decidim_file_authorization.admin_assets" do |app|
+        app.config.assets.precompile += %w(decidim/admin/component_permissions.js)
+      end
     end
   end
 end
