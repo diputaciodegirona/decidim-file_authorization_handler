@@ -1,7 +1,7 @@
-DNI;Data de naixement
-1111A;1/1/1981
-   2222B  ;   2/2/1982  
-;1/6/1989
-12323B;fecha-no-valida
+DNI,Data de naixement
+1111A,1/1/1981
+   2222B  ,   2/2/1982  
+,1/6/1989
+12323B,fecha-no-valida
 sasd
-3333A;3/3/1983
+3333A,3/3/1983
