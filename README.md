@@ -20,15 +20,22 @@ kept out of the scope for the first release.
 
 ### CSV file format
 
-The CSV file format is not configurable. The plugin expects a semicolon separated CSV with headers:
+The CSV file format is not configurable. The plugin expects a comma separated CSV with headers:
 
-```
-ID_NUMBER;BIRTH_DATE
-00000000Z;07/03/2014
+```console
+ID_NUMBER,BIRTH_DATE
+00000000Z,07/03/2014
 ```
 
 - ID_NUMBER: No format restrictions
 - BIRTHDATE: `dd/mm/YYYY` format
+
+The CSV separator can be overriden at installation level by using an initializer:
+
+```ruby
+# config/initializers/file_authorization_handler.rb
+Decidim::FileAuthorizationHandler::CsvData.col_sep= ";"
+```
 
 ### Overriding Authorization Handler name
 

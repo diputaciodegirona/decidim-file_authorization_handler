@@ -5,6 +5,9 @@ require "csv"
 module Decidim
   module FileAuthorizationHandler
     class CsvData
+      @col_sep= ","
+      class << self; attr_accessor :col_sep end
+
       attr_reader :errors, :values
 
       def initialize(file)
@@ -12,7 +15,7 @@ module Decidim
         @errors = []
         @values = []
 
-        CSV.foreach(@file, headers: true, col_sep: ",") do |row|
+        CSV.foreach(@file, headers: true, col_sep: CsvData.col_sep) do |row|
           process_row(row)
         end
       end
