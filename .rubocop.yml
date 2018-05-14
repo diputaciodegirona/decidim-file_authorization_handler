@@ -1270,7 +1270,7 @@ Metrics/BlockLength:
     - 'decidim-*/db/migrate/*.rb'
     - 'decidim-*/**/*/types/**/*'
     - 'decidim-*/lib/**/*/test/**/*'
-    - 'decidim-*/lib/**/*/feature.rb'
+    - 'decidim-*/lib/**/*/component.rb'
     - 'decidim-*/lib/**/*/participatory_space.rb'
     - '**/spec/**/*_spec.rb'
     - '**/spec/shared/**.rb'

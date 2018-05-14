@@ -25,5 +25,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "decidim-dev", ">= #{Decidim::FileAuthorizationHandler::VERSION}"
   s.add_development_dependency "faker"
+  s.add_development_dependency 'listen'
   s.add_development_dependency "letter_opener_web", "~> 1.3.3"
 end
