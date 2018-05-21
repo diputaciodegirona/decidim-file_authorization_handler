@@ -10,6 +10,14 @@ module Decidim
         resource :censuses, only: [:show, :create, :destroy]
       end
 
+      initializer "decidim_file_authorization.add_admin_authorizations" do |_app|
+        Decidim.configure do |config|
+          config.admin_abilities += [
+            "Decidim::FileAuthorizationHandler::Abilities::AdminAbility"
+          ]
+        end
+      end
+
       initializer "decidim_file_authorization.add_admin_menu" do
         Decidim.menu :admin_menu do |menu|
           menu.item I18n.t("decidim.file_authorization_handler.admin.menu.census"),
