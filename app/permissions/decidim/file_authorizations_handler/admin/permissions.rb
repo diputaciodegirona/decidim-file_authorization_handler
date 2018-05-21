@@ -7,12 +7,9 @@ module Decidim
       # Intended to be used with `cancancan`.
       class Permissions < Decidim::DefaultPermissions
         def permissions
-          puts "ouieaaaaaaaaaaaaaaaaaaaaaaaaaaaadmin!"
           return permission_action if permission_action.scope != :admin
           return Decidim::Proposals::Admin::Permissions.new(user, permission_action, context).permissions if permission_action.scope == :admin
-          puts %Q[user.organization.available_authorizations.include?("file_authorization_handler") ??? #{user.organization.available_authorizations.include?("file_authorization_handler")}]
           if user.organization.available_authorizations.include?("file_authorization_handler")
-            puts "action and subject: #{permission_action.action} / #{permission_action.subject}"
             if permission_action_in(:manage, :read)
               allow! if permission_action.subject == Decidim::FileAuthorizationHandler::CensusDatum
             end

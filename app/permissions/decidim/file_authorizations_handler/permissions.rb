@@ -6,7 +6,6 @@ module Decidim
     # Intended to be used with `cancancan`.
     class Permissions < Decidim::DefaultPermissions
       def permissions
-        puts "ouieaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         return permission_action unless user
         return Decidim::FileAuthorizationHandler::Admin::Permissions.new(user, permission_action, context).permissions if permission_action.scope == :admin
       end
