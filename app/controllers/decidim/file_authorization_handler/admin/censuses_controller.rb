@@ -5,12 +5,12 @@ module Decidim
     module Admin
       class CensusesController < Decidim::Admin::ApplicationController
         def show
-          enforce_permission_to :show, :authorization
+          authorize! :show, CensusDatum
           @status = Status.new(current_organization)
         end
 
         def create
-          enforce_permission_to :create, :authorization
+          authorize! :create, CensusDatum
           if params[:file]
             data = CsvData.new(params[:file].path)
             CensusDatum.insert_all(current_organization, data.values)
@@ -22,7 +22,7 @@ module Decidim
         end
 
         def destroy
-          enforce_permission_to :destroy, :authorization, organization: current_organization
+          authorize! :create, CensusDatum
           CensusDatum.clear(current_organization)
           redirect_to censuses_path, notice: t(".success")
         end
