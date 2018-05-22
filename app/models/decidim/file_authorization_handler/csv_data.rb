@@ -15,6 +15,7 @@ module Decidim
         @errors = []
         @values = []
 
+        Rails.logger.info "CsvData.col_sep: #{CsvData.col_sep}"
         CSV.foreach(@file, headers: true, col_sep: CsvData.col_sep) do |row|
           process_row(row)
         end
