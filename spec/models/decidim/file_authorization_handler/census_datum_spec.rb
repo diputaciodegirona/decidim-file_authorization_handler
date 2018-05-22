@@ -19,11 +19,19 @@ RSpec.describe Decidim::FileAuthorizationHandler::CensusDatum, type: :model do
     end
   end
 
-  it "inserts a collection of values" do
-    CensusDatum.insert_all(organization, [["1111A", "1990/12/1"], ["2222B", "1990/12/2"]])
-    expect(CensusDatum.count).to be 2
-    CensusDatum.insert_all(organization, [["1111A", "2001/12/1"], ["3333C", "1990/12/3"]])
-    expect(CensusDatum.count).to be 4
+  context "insert_all" do
+    it "inserts a collection of values" do
+      CensusDatum.insert_all(organization, [["1111A", "1990/12/1"], ["2222B", "1990/12/2"]])
+      expect(CensusDatum.count).to be 2
+      CensusDatum.insert_all(organization, [["1111A", "2001/12/1"], ["3333C", "1990/12/3"]])
+      expect(CensusDatum.count).to be 4
+    end
+
+    context "when values is empty" do
+      it "returns without crashing" do
+        CensusDatum.insert_all(organization, [])
+      end
+    end
   end
 
   describe "normalization methods" do

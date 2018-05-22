@@ -41,6 +41,8 @@ module Decidim
 
       # Insert a collection of values
       def self.insert_all(organization, values)
+        return if values.empty?
+
         table_name = CensusDatum.table_name
         columns = %w(id_document birthdate decidim_organization_id created_at).join(",")
         now = Time.current
