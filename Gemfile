@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Declare your gem's dependencies in decidim-census.gemspec.
+# Declare your gem's dependencies in decidim-file_authorization_handler.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 gemspec
@@ -14,3 +14,7 @@ gemspec
 
 # This is required to generate the testing dummy_app (see README)
 gem "decidim", require: true
+
+group :test do
+  gem 'bootsnap', require: false
+end

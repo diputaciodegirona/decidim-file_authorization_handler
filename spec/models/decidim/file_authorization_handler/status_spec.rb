@@ -8,7 +8,7 @@ RSpec.describe Decidim::FileAuthorizationHandler::Status, type: :model do
   it "returns last import date" do
     last = FactoryBot.create :census_datum, organization: organization
     status = Decidim::FileAuthorizationHandler::Status.new(organization)
-    expect(status.last_import_at).to eq(last.created_at)
+    expect(last.created_at.to_i).to eq status.last_import_at.to_i
   end
 
   it "retrieve the number of unique documents" do

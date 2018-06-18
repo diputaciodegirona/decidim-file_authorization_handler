@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "decidim", ">= #{Decidim::FileAuthorizationHandler::VERSION}"
   s.add_dependency "decidim-admin", ">= #{Decidim::FileAuthorizationHandler::VERSION}"
-  s.add_dependency "rails", "~> 5.1.6"
+  s.add_dependency "rails", ">= 5.2"
 
   s.add_development_dependency "decidim-dev", ">= #{Decidim::FileAuthorizationHandler::VERSION}"
   s.add_development_dependency "faker"
