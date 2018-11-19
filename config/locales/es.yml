@@ -13,9 +13,9 @@ es:
   decidim:
     authorization_handlers:
       file_authorization_handler:
-        name: Padrón Municipal
-        explanation: Autoriza tu cuenta de usuario contra el Padrón Municipal
-        type: Excel
+        name: Censo de la Organización
+        explanation: Autoriza tu cuenta de usuario contra el Censo de la Organización
+        type: CSV
         fields:
           birthdate: Fecha de nacimiento
     file_authorization_handler:

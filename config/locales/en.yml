@@ -13,9 +13,9 @@ en:
   decidim:
     authorization_handlers:
       file_authorization_handler:
-        name: Municipality Census
-        explanation: Authorize your user account against the Municipality Census
-        type: Excel
+        name: Organization's Census
+        explanation: Authorize your user account against Organization's Census
+        type: CSV
         fields:
           birthdate: Birthdate
     file_authorization_handler:
