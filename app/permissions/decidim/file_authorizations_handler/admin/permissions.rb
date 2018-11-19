@@ -19,7 +19,7 @@ module Decidim
         private
 
         def permission_action_in?(*actions)
-          actions.any? {|action| permission_action.action == action }
+          actions.any? { |action| permission_action.action == action }
         end
       end
     end
