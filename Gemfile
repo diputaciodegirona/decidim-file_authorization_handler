@@ -16,5 +16,5 @@ gemspec
 gem "decidim", require: true
 
 group :test do
-  gem 'bootsnap', require: false
+  gem "bootsnap", require: false
 end
