@@ -5,7 +5,6 @@ require "csv"
 module Decidim
   module FileAuthorizationHandler
     class CsvData
-
       @col_sep = ","
       class << self; attr_accessor :col_sep end
 
