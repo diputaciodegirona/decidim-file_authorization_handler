@@ -5,7 +5,7 @@
 class FileAuthorizationHandler < Decidim::AuthorizationHandler
   # This is the input (from the user) to validate against
   attribute :id_document, String
-  attribute :birthdate, Date
+  attribute :birthdate, Decidim::Attributes::LocalizedDate
 
   # This is the validation to perform
   # If passed, an authorization is created
