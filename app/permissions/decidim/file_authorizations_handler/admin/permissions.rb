@@ -4,7 +4,6 @@ module Decidim
   module FileAuthorizationHandler
     module Admin
       # Defines the abilities related to surveys for a logged in admin user.
-      # Intended to be used with `cancancan`.
       class Permissions < Decidim::DefaultPermissions
         def permissions
           return permission_action if permission_action.scope != :admin
