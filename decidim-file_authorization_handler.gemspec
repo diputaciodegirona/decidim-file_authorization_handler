@@ -10,10 +10,10 @@ Gem::Specification.new do |s|
   s.name = "decidim-file_authorization_handler"
   s.version = Decidim::FileAuthorizationHandler::VERSION
   s.authors = ["Daniel Gómez", "Xavier Redó", "Oliver Valls"]
-  s.email = ["info@coditramuntana.com"]
-  s.summary = "CSV verifier"
+  s.email = ["hola@marsbased.com"]
+  s.summary = "CSV document + birth date verifier"
   s.description = "Census uploads via csv files"
-  s.homepage = "https://github.com/coditramuntana/"
+  s.homepage = "https://github.com/marsbased/"
   s.license = "AGPLv3"
 
   s.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
