@@ -4,7 +4,6 @@ module Decidim
   module FileAuthorizationHandler
     class AdminEngine < ::Rails::Engine
       isolate_namespace Decidim::FileAuthorizationHandler::Admin
-      paths["db/migrate"] = nil
 
       routes do
         resource :censuses, only: [:show, :create, :destroy]
