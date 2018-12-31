@@ -21,11 +21,11 @@ describe Decidim::FileAuthorizationHandler::Admin::Permissions do
   end
 
   before do
-    organization.update_attributes!(available_authorizations: ['file_authorization_handler'])
+    organization.update_attributes!(available_authorizations: ["file_authorization_handler"])
   end
 
   context "when action is allowed" do
-    %i[show create destroy].each do |action_name|
+    [:show, :create, :destroy].each do |action_name|
       let(:action_name) { action_name }
 
       it { is_expected.to eq true }
@@ -33,7 +33,7 @@ describe Decidim::FileAuthorizationHandler::Admin::Permissions do
   end
 
   context "when action is NOT allowed" do
-    %i[manage list update].each do |action_name|
+    [:manage, :list, :update].each do |action_name|
       let(:action_name) { action_name }
 
       it_behaves_like "permission is not set"

@@ -2,14 +2,14 @@
 
 > A plugin to add a csv based authorization handler to the Decidim platform
 
-Allows admin users to upload a CSV file containing Document IDs and birthdates 
+Allows admin users to upload a CSV file containing Document IDs and birthdates
 to a given organization.
-This information is used by a Decidim authorization handler to authorize real 
+This information is used by a Decidim authorization handler to authorize real
 users.
 
 ## Usage
 
-This module provides a model `Decidim::FileAuthorizationHandler::CensusDatum` 
+This module provides a model `Decidim::FileAuthorizationHandler::CensusDatum`
 to store census information (identity document and birth date) in a hashed way
 (real data is never stored).
 
