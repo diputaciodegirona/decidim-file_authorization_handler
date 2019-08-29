@@ -5,7 +5,7 @@ module Decidim
     class CensusDatum < ApplicationRecord
       # rubocop:disable Rails/InverseOf
       belongs_to :organization, foreign_key: :decidim_organization_id,
-                                class_name: "Decidim::Organization"
+        class_name: "Decidim::Organization"
       # rubocop:enable Rails/InverseOf
 
       # An organzation scope
@@ -14,11 +14,11 @@ module Decidim
       end
 
       # Search for a specific document id inside a organization
-      def self.search_id_document(organization, id_document)
+      def self.search(organization, fields_hash)
         CensusDatum.inside(organization)
-                   .where(id_document: normalize_and_encode_id_document(id_document))
-                   .order(created_at: :desc, id: :desc)
-                   .first
+        .where(fields_hash.transform_values(&:encode))
+        .order(created_at: :desc, id: :desc)
+        .first
       end
 
       # Normalizes a id document string (remove invalid characters) and encode it
@@ -32,11 +32,50 @@ module Decidim
         )
       end
 
+      # temporary
+      def self.fields
+        @fields ||= FileAuthorizationHandler.fields
+      end
+
+      def self.process_row(row)
+        raise unless row.transform_keys!(&:to_sym).keys == fields.keys
+
+        row.map do |key, value|
+          value = self.validate(key, value) if fields[key][:format]
+          value = self.parse(key, value) if fields[key][:parse]
+          value = self.encode(key, value) if fields[key][:search]
+          value
+        end
+      end
+
+      def self.validate(key, value)
+        value.match(fields[key][:format]) ? value : raise
+      end
+
+      # # Convert a date from string to a Date object
+      # def self.parse_date(string)
+      #   Date.strptime((string || "").strip, "%d/%m/%Y")
+      # rescue StandardError
+      #   nil
+      # end
+
+      # Encodes the value to conform with Decidim privacy guidelines.
+      def self.encode(key, value)
+        return unless value
+
+        Digest::SHA256.hexdigest(
+          "#{value}-#{Rails.application.secrets.secret_key_base}"
+        )
+      end
+
       # Convert a date from string to a Date object
-      def self.parse_date(string)
-        Date.strptime((string || "").strip, "%d/%m/%Y")
-      rescue StandardError
-        nil
+      def self.parse(key, value)
+        fields[key][:parse].call(value)
+      end
+
+      def self.before_insertion
+        # Implement this in your model decorator if you would like to perform
+        # some processing before insertion happens (optional).
       end
 
       # Insert a collection of values
@@ -44,9 +83,10 @@ module Decidim
         return if values.empty?
 
         table_name = CensusDatum.table_name
-        columns = %w(id_document birthdate decidim_organization_id created_at).join(",")
+        columns = (fields.keys + %w(decidim_organization_id created_at)).join(",")
         now = Time.current
-        values = values.map { |row| "('#{row[0]}', '#{row[1]}', '#{organization.id}', '#{now}')" }
+        byebug
+        values = values.map { |row| "(#{row.map{|r| "'#{r}'"}.join(', ')}, '#{organization.id}', '#{now}')" }
         sql = "INSERT INTO #{table_name} (#{columns}) VALUES #{values.join(",")}"
         ActiveRecord::Base.connection.execute(sql)
       end

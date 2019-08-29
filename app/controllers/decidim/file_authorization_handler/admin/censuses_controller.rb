@@ -16,7 +16,7 @@ module Decidim
             CensusDatum.insert_all(current_organization, data.values)
             RemoveDuplicatesJob.perform_later(current_organization)
             flash[:notice] = t(".success", count: data.values.count,
-                                           errors: data.errors.count)
+                               errors: data.errors.count)
           end
           redirect_to censuses_path
         end
@@ -24,6 +24,7 @@ module Decidim
         def destroy
           enforce_permission_to :destroy, :authorization, organization: current_organization
           CensusDatum.clear(current_organization)
+          Authorization.where(organization: current_organization, name: handler_name).delete_all
           redirect_to censuses_path, notice: t(".success")
         end
       end

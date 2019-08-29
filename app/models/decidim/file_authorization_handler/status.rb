@@ -20,7 +20,7 @@ module Decidim
       # Returns the number of unique census
       def count
         @count ||= CensusDatum.inside(@organization)
-                              .distinct.count(:id_document)
+                              .distinct.count(:id_number)
         @count
       end
     end
