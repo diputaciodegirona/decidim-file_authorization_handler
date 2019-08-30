@@ -6,10 +6,11 @@
     </h2>
   </div>
   <div class="card-section">
-    <% if @status.count > 0 %>
-      <p><%= t('decidim.file_authorization_handler.admin.show.data', count: @status.count,
+    <% if @status.records.positive? %>
+      <p><%= t('decidim.file_authorization_handler.admin.show.records', count: @status.records,
         due_date: l(@status.last_import_at, format: :long)) %>
       </p>
+      <p><%= t('decidim.file_authorization_handler.admin.show.authorized', count: @status.authorized) %></p>
       <%= link_to t('decidim.file_authorization_handler.admin.destroy.title'),
         censuses_path,
         method: :delete,
@@ -30,6 +31,11 @@
   </div>
   <div class="card-section">
     <p><%= t('decidim.file_authorization_handler.admin.new.info') %></p>
+    <ul>
+      <% Decidim::FileAuthorizationHandler.fields.keys.each do |key| %>
+        <li><%= key %></li>
+      <% end %>
+    </ul>
     <%= form_tag censuses_path, multipart: true, class: 'form' do %>
       <%= label_tag :name, t('admin.new.file', scope: 'decidim.file_authorization_handler') %>
       <%= file_field_tag :file %>

@@ -15,6 +15,10 @@ module Decidim
         configuration.fields
       end
 
+      def search_fields
+        fields.select { |_k,v| v[:search]}
+      end
+
       def configure
         @configuration ||= Configuration.new
         yield(configuration)

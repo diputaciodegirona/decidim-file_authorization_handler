@@ -24,7 +24,7 @@ module Decidim
         def destroy
           enforce_permission_to :destroy, :authorization, organization: current_organization
           CensusDatum.clear(current_organization)
-          Authorization.where(organization: current_organization, name: handler_name).delete_all
+          Authorization.where(organization: current_organization, name: "file_authorization_handler").delete_all
           redirect_to censuses_path, notice: t(".success")
         end
       end

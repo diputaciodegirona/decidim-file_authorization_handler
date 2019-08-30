@@ -8,28 +8,22 @@ module Decidim
         class_name: "Decidim::Organization"
       # rubocop:enable Rails/InverseOf
 
+      # Sets the presenter class for the :admin_log for a RedirectRule resource.
+      def self.log_presenter_class_for(_log)
+        Decidim::FileAuthorizationHandler::AdminLog::CensusDatumPresenter
+      end
+
       # An organzation scope
       def self.inside(organization)
         where(decidim_organization_id: organization.id)
       end
 
       # Search for a specific document id inside a organization
-      def self.search(organization, fields_hash)
+      def self.search(organization, search_fields)
         CensusDatum.inside(organization)
-        .where(fields_hash.transform_values(&:encode))
+        .where(search_fields.transform_values{|v|encode(v)})
         .order(created_at: :desc, id: :desc)
         .first
-      end
-
-      # Normalizes a id document string (remove invalid characters) and encode it
-      # to conform with Decidim privacy guidelines.
-      def self.normalize_and_encode_id_document(id_document)
-        return "" unless id_document
-        id_document = id_document.gsub(/[^A-z0-9]/, "").upcase
-        return "" if id_document.blank?
-        Digest::SHA256.hexdigest(
-          "#{id_document}-#{Rails.application.secrets.secret_key_base}"
-        )
       end
 
       # temporary
@@ -38,44 +32,36 @@ module Decidim
       end
 
       def self.process_row(row)
-        raise unless row.transform_keys!(&:to_sym).keys == fields.keys
+        raise("headers") unless row.transform_keys!(&:to_sym).keys == fields.keys
 
         row.map do |key, value|
-          value = self.validate(key, value) if fields[key][:format]
-          value = self.parse(key, value) if fields[key][:parse]
-          value = self.encode(key, value) if fields[key][:search]
+          value = validate(value, fields[key][:format])
+          value = parse(value, fields[key][:parse])
+          value = encode(value) if fields[key][:search]
           value
         end
       end
 
-      def self.validate(key, value)
-        value.match(fields[key][:format]) ? value : raise
-      end
+      def self.validate(value, regexp)
+        return value unless regexp
 
-      # # Convert a date from string to a Date object
-      # def self.parse_date(string)
-      #   Date.strptime((string || "").strip, "%d/%m/%Y")
-      # rescue StandardError
-      #   nil
-      # end
-
-      # Encodes the value to conform with Decidim privacy guidelines.
-      def self.encode(key, value)
-        return unless value
-
-        Digest::SHA256.hexdigest(
-          "#{value}-#{Rails.application.secrets.secret_key_base}"
-        )
+        value.match(regexp) ? value : raise("format => #{value}")
       end
 
       # Convert a date from string to a Date object
-      def self.parse(key, value)
-        fields[key][:parse].call(value)
+      def self.parse(value, procedure)
+        return value unless procedure
+
+        procedure.call(value)
+      rescue StandardError
+        raise("parse => #{value}")
       end
 
-      def self.before_insertion
-        # Implement this in your model decorator if you would like to perform
-        # some processing before insertion happens (optional).
+      # Encodes the value to conform with Decidim privacy guidelines.
+      def self.encode(value)
+        Digest::SHA256.hexdigest(
+          "#{value}-#{Rails.application.secrets.secret_key_base}"
+        )
       end
 
       # Insert a collection of values
@@ -85,7 +71,6 @@ module Decidim
         table_name = CensusDatum.table_name
         columns = (fields.keys + %w(decidim_organization_id created_at)).join(",")
         now = Time.current
-        byebug
         values = values.map { |row| "(#{row.map{|r| "'#{r}'"}.join(', ')}, '#{organization.id}', '#{now}')" }
         sql = "INSERT INTO #{table_name} (#{columns}) VALUES #{values.join(",")}"
         ActiveRecord::Base.connection.execute(sql)

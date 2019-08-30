@@ -6,10 +6,15 @@ module Decidim
     class RemoveDuplicatesJob < ApplicationJob
       queue_as :default
 
+      # temporary
+      def search_keys
+        FileAuthorizationHandler.search_fields.keys
+      end
+
       def perform(organization)
-        duplicated_census(organization).pluck(:id_document).each do |id_document|
+        duplicated_census(organization).pluck(*search_keys).each do |values|
           CensusDatum.inside(organization)
-                     .where(id_document: id_document)
+                     .where(search_keys.zip(values.to_a).to_h)
                      .order(id: :desc)
                      .all[1..-1]
                      .each(&:delete)
@@ -20,9 +25,9 @@ module Decidim
 
       def duplicated_census(organization)
         CensusDatum.inside(organization)
-                   .select(:id_document)
-                   .group(:id_document)
-                   .having("count(id_document)>1")
+                   .select(*search_keys)
+                   .group(*search_keys)
+                   .having("count(*)>1")
       end
     end
   end

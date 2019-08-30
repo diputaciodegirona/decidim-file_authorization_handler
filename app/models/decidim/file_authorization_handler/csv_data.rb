@@ -13,7 +13,7 @@ module Decidim
         @errors = []
         @values = []
 
-        Rails.logger.info "col_sep: #{@col_sep}"
+        Rails.logger.info "[#{self.class}] col_sep: '#{@col_sep}'"
         CSV.foreach(@file, headers: true, col_sep: @col_sep) do |row|
           process_row(row)
         end
@@ -23,7 +23,8 @@ module Decidim
 
       def process_row(row)
         values << CensusDatum.process_row(row.to_h)
-      rescue StandardError
+      rescue StandardError => e
+        Rails.logger.info "[#{self.class}] Error: #{e.message}"
         errors << row
       end
     end

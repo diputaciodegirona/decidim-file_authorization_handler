@@ -19,13 +19,16 @@ ca:
         fields:
           birthdate: Data de naixement
     file_authorization_handler:
+      admin_log:
+        create: "%{user_name} ha pujat dades a %{resource_name}"
+        delete: "%{user_name} ha esborrat les dades de %{resource_name} i ha revocat les autoritzacions relacionades"
       errors:
         messages:
           not_censed: No hem pogut trobar el teu document d'identitat amb aquesta data de naixement al padró municipal. Si les dades són correctes i el problema persisteix, siusplau, posa't en contacte amb un administrador.
           younger_than_minimum_age: Hauries de ser major de %{age} anys
       admin:
         destroy:
-          title: Esborrar totes les dades del cens
+          title: Esborrar dades del cens i revocar autoritzacions
           confirm: Aquesta acció no es pot desfer. Estàs segur/a que voleu continuar?
         censuses:
           create:
@@ -36,10 +39,11 @@ ca:
           census: Pujar cens
         show:
           title: Dades del cens carregat
-          data: Hi ha un total de %{count} registres carregats. La última càrrega va ser el dia %{due_date}
+          records: Hi ha un total de %{count} registres carregats. La última càrrega va ser el dia %{due_date}
+          authorized: Hi ha un total de %{count} usuaris autoritzats amb aquestes dades.
           empty: Encara no hi ha dades censals carregades. Utilitza el següent formulari per importar-lo utilitzant un fitxer CSV.
         new:
-          info: "Ha de ser un fitxer generat en excel i exportat en CSV amb dues columnes: document d'identitat i data de naixement"
+          info: "Ha de ser un fitxer generat en excel i exportat en CSV amb les següents columnes:"
           title: Pujar un nou cens
           file: Arxiu excel .csv amb les dades del cens
           submit: Carrega

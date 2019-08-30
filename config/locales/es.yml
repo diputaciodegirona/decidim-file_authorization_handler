@@ -25,7 +25,7 @@ es:
           younger_than_minimum_age: Deberías ser mayor de %{age} años
       admin:
         destroy:
-          title: Borrar todos los datos de censo
+          title: Borrar datos de censo y revocar autorizaciones
           confirm: Borrar el censo no se puede deshacer. ¿Estás seguro/a que deseas continuar?
         censuses:
           create:
@@ -36,10 +36,11 @@ es:
           census: Subir censo
         show:
           title: Datos de censo actuales
-          data: Hay un total de %{count} registros cargados. La última carga fue el día %{due_date}
+          records: Hay un total de %{count} registros cargados. La última carga fue el día %{due_date}
+          authorized: Hay un total de %{count} usuarios autorizados con estos datos.
           empty: No hay datos censales. Usa el formulario a continuación para importar usando un fichero CSV.
         new:
-          info: 'Debe ser un fichero generado por excel y exportado en formato CSV con dos columnas: documento de identidad y fecha de nacimiento'
+          info: 'Debe ser un fichero generado por excel y exportado en formato CSV con las siguientes columnas:'
           title: Subir un nuevo censo
           file: Archivo excel .csv con los datos del censo
           submit: Subir archivo
