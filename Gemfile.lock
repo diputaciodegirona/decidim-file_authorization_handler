@@ -2,8 +2,8 @@ PATH
   remote: .
   specs:
     decidim-file_authorization_handler (0.15.0)
-      decidim (>= 0.15.0)
-      decidim-admin (>= 0.15.0)
+      decidim (>= 0.24.0)
+      decidim-admin (>= 0.24.0)
 
 GEM
   remote: https://rubygems.org/
