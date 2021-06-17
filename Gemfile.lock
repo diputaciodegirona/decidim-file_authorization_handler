@@ -4,7 +4,6 @@ PATH
     decidim-file_authorization_handler (0.15.0)
       decidim (>= 0.15.0)
       decidim-admin (>= 0.15.0)
-      rails (>= 5.2)
 
 GEM
   remote: https://rubygems.org/
