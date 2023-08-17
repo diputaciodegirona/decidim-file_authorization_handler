@@ -41,6 +41,7 @@ class FileAuthorizationHandler < Decidim::AuthorizationHandler
   end
 
   def unique_id
+    return nil unless organization
     Digest::SHA256.hexdigest("#{census_for_user&.id_document}-#{organization.id}-#{Rails.application.secrets.secret_key_base}")
   end
 
